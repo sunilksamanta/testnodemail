@@ -25,6 +25,7 @@ app.get('/testMail', function (req, res) {
                 pass: account.pass // generated ethereal password
             }
         });
+        console.log(account);
 
     // setup email data with unicode symbols
     let mailOptions = {
