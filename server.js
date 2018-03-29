@@ -11,45 +11,48 @@ app.get('/', function (req, res) {
 // On localhost:3000/welcome
 app.get('/testMail', function (req, res) {
 
+    // Create a SMTP transport object
+    var transport = nodemailer.createTransport("SMTP", {
+        auth: {
+            user: "sunilthedj@gmail.com",
+            pass: "jgsgcspmvjmmzgrr"
+        }
+    });
 
-// Generate test SMTP service account from ethereal.email
-// Only needed if you don't have a real mail account for testing
-    nodemailer.createTestAccount((err, account) => {
-        // create reusable transporter object using the default SMTP transport
-        let transporter = nodemailer.createTransport({
-            host: 'smtp.ethereal.email',
-            port: 587,
-            secure: false, // true for 465, false for other ports
-            auth: {
-                user: account.user, // generated ethereal user
-                pass: account.pass // generated ethereal password
-            }
-        });
-        console.log(account);
+    console.log('SMTP Configured');
 
-    // setup email data with unicode symbols
-    let mailOptions = {
-        from: '"Fred Foo 👻" <foo@example.com>', // sender address
-        to: 'sunilthedj@gmail.com', // list of receivers
-        subject: 'Hello ✔', // Subject line
-        text: 'Hello world?', // plain text body
-        html: '<b>Hello world?</b>' // html body
+// Message object
+    var message = {
+
+        // sender info
+        from: 'Sender Name <sender@example.com>',
+
+        // Comma separated list of recipients
+        to: '"Receiver Name" <sunilkumar.samanta@yahoo.com>',
+
+        // Subject of the message
+        subject: 'Nodemailer is unicode friendly ✔',
+
+        // plaintext body
+        text: 'Hello to myself!',
+
+        // HTML body
+        html:'<p><b>Hello</b> to myself <img src="cid:note@node"/></p>'+
+        '<p>Here\'s a nyan cat for you as an embedded attachment:<br/></p>'
     };
 
-    // send mail with defined transport object
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            return console.log(error);
+    console.log('Sending Mail');
+    transport.sendMail(message, function(error){
+        if(error){
+            console.log('Error occured');
+            console.log(error.message);
+            return;
         }
-        console.log('Message sent: %s', info.messageId);
-    // Preview only available when sending through an Ethereal account
-    //console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+        console.log('Message sent successfully!');
 
-    // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
-    // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
-});
-});
-    //res.send('<b>Hello</b> welcome to my http server made with express');
+        // if you don't want to use this transport object anymore, uncomment following line
+        //transport.close(); // close the connection pool
+    });
 });
 
 // Change the 404 message modifing the middleware
