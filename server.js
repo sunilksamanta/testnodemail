@@ -12,12 +12,13 @@ app.get('/', function (req, res) {
 app.get('/testMail', function (req, res) {
 
     // Create a SMTP transport object
-    var transport = nodemailer.createTransport("SMTP", {
-        auth: {
-            user: "sunilthedj@gmail.com",
-            pass: "jgsgcspmvjmmzgrr"
-        }
-    });
+    // var transport = nodemailer.createTransport("SMTP", {
+    //     auth: {
+    //         user: "sunilthedj@gmail.com",
+    //         pass: "jgsgcspmvjmmzgrr"
+    //     }
+    // });
+    var transport = nodemailer.createTransport("smtps://sunilthedj%40gmail.com:"+encodeURIComponent('jgsgcspmvjmmzgrr') + "@smtp.gmail.com:465"); 
 
     console.log('SMTP Configured');
 
